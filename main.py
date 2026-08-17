@@ -11,6 +11,13 @@ def format_data(account):
     return f"{account_name}, a {account_descript}, from {account_from}"
 
 
+def check_answer(guess,answer_a, answer_b):
+    if answer_a > answer_b:
+        return guess == "a"
+    else:
+        return guess == "b"
+
+
 def higher_lower():
     game = True
     while game:
@@ -29,25 +36,20 @@ def higher_lower():
             print(vs)
             print(f"against B: {format_data(random_b)}")
             user_choice = input("Who has more followers Type 'a' or 'b'?: ").lower()
-            if user_choice == "a":
-                if random_a["follower_count"] > random_b["follower_count"]:
-                    current_score += 1
+            is_right = check_answer(user_choice, random_a["follower_count"], random_b["follower_count"])
+
+            if is_right:
+                if user_choice == "a":
                     random_b = random.choice(data)
-                    print(f"Your Right! Current Score: {current_score}")
-                elif random_b["follower_count"] > random_a["follower_count"]:
-                    print(f"Sorry, that's wrong. Final Score: {current_score}")
-                    game_is_over = True
-            elif user_choice == "b":
-                if random_a["follower_count"] < random_b["follower_count"]:
-                    current_score += 1
+                else:
                     random_a = random_b
                     random_b = random.choice(data)
-                    print(f"Your Right! Current Score: {current_score}")
-                elif random_b["follower_count"] < random_a["follower_count"]:
-                    print(f"Sorry, that's wrong. Final Score: {current_score}")
-                    game_is_over = True
+                current_score += 1
+                print(f"You're right! Current score: {current_score}")
             else:
-                print("Type 'a' or 'b': ")
+                print(f"Sorry, that's wrong. Final score: {current_score}")
+                game_is_over = True
+
 
 
         again = input("Do You want play again. Type 'y' or 'n' ").lower()
